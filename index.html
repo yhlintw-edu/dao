@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圳惜．珍惜：嘉義道將圳環境教育專題</title>
+    <!-- 載入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 載入 Phosphor Icons for simple icons like download and other modules -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1/dist/p.min.js"></script>
+    <!-- 使用 Inter 字體 (Tailwind 預設字體) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+	font-family: 'Inter', sans-serif;
+	background-color: #f6fdfd; /* 淺灰藍綠色背景 */
+	color: #333;
+	font-size: x-large;
+        }
+        .hero-video-container {
+            position: relative;
+            height: 80vh; /* 確保影片區塊足夠高 */
+            overflow: hidden;
+        }
+        .hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: 0;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4); /* 增加黑色半透明覆蓋層以確保文字清晰 */
+            z-index: 1;
+        }
+        .content-card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+        /* 響應式圖片藝廊 */
+        .photo-gallery {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: repeat(2, 1fr);
+        }
+        @media (min-width: 768px) {
+            .photo-gallery {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* 學生心得截斷樣式 */
+        .reflection-text {
+            max-height: 6rem; /* 限制初始高度，大約 4 行 */
+            overflow: hidden;
+            position: relative;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .reflection-text.expanded {
+            max-height: 500px; /* 展開時足夠顯示所有內容 */
+        }
+        /* 內容漸變遮罩 */
+        .reflection-text::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2.5rem; /* 漸變遮罩的高度 */
+            background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+            pointer-events: none;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .reflection-text.expanded::after {
+            opacity: 0; /* 展開時移除遮罩 */
+        }
+        
+        /* APP 模組卡片樣式 - 更新為圖片卡片樣式 */
+        .module-image {
+            width: 200px;
+            height: 300px; /* 固定高度 */
+            object-fit: cover;
+            @apply rounded-t-xl; /* 確保圖片頂部圓角 */
+        }
+        .module-card {
+            /* 移除 P-6 和 items-center, text-center for better image/text alignment */
+            @apply bg-white rounded-xl shadow-lg flex flex-col transition duration-300 border-b-4 border-transparent hover:border-teal-500 hover:shadow-2xl cursor-pointer overflow-hidden;
+        }
+        .module-title {
+            @apply font-bold text-xl mb-1 text-cyan-800 text-center;
+        }
+        .module-description {
+            @apply text-sm text-gray-600 text-center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 導航列 (使用 semi-transparent 黑色背景，白色文字，並保持 sticky 置頂) -->
+    <nav class="sticky top-0 z-30 bg-black/30 backdrop-blur-sm shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <!-- 導航標題文字改為白色 -->
+                        <span class="text-2xl font-bold text-white">圳惜．珍惜</span>
+                    </div>
+                </div>
+                <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                    <!-- 導航連結文字改為白色，hover 時改為淺藍綠色 -->
+                    <a href="#spirit" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-white hover:text-teal-300 border-b-2 border-transparent hover:border-teal-300 transition duration-150 ease-in-out">核心精神</a>
+                    <a href="#history" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-white hover:text-teal-300 border-b-2 border-transparent hover:border-teal-300 transition duration-150 ease-in-out">歷史價值</a>
+                    <a href="#journey" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-white hover:text-teal-300 border-b-2 border-transparent hover:border-teal-300 transition duration-150 ease-in-out">走讀生態</a>
+                    <a href="#community" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-white hover:text-teal-300 border-b-2 border-transparent hover:border-teal-300 transition duration-150 ease-in-out">人文關懷</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 0. 導將圳：嘉義的生命之河 (Hero Section) -->
+    <header class="hero-video-container mb-16 rounded-b-3xl mt-[-4rem]">
+        <!-- 背景影片 -->
+        <video autoplay loop muted class="hero-video">
+            <source src="1.mp4" type="video/mp4">
+            您的瀏覽器不支援影片標籤。
+        </video>
+        <!-- 新增 pt-16 (padding-top: 4rem) 將標題內容往下推，避免被導航欄遮擋 -->
+        <div class="hero-overlay flex flex-col justify-center items-center p-6 text-center pt-16">
+            <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-4 z-10 tracking-tight">
+                道將圳：圳惜．珍惜
+            </h1>
+            <p class="text-xl md:text-2xl text-white max-w-3xl z-10 font-light">
+                守護母親河，共創嘉義永續生活
+            </p>
+            <div class="mt-8 z-10">
+                <!-- 按鈕改為深藍綠色 -->
+                <a href="#spirit" class="bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105 shadow-xl">
+                    探索我們的故事
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 1. 核心精神：圳惜．珍惜 (Theme and Spirit) -->
+    <section id="spirit" class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <!-- 標題改為深藍綠色 -->
+        <h2 class="text-4xl font-bold text-center text-cyan-800 mb-12">
+            核心精神：「圳惜．珍惜」
+        </h2>
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <!-- 視覺元素：圖片 -->
+            <div class="content-card rounded-xl overflow-hidden shadow-2xl">
+                <img src="2.jpg" alt="道將圳旁綠意盎然的景象" class="w-full h-80 object-cover transform transition duration-500 hover:scale-110">
+            </div>
+            <!-- 文字內容 -->
+            <div class="text-lg space-y-6">
+                <!-- 次標題改為深藍綠色 -->
+                <h3 class="text-3xl font-semibold text-teal-700">珍惜水圳，尊重自然，愛護生活環境</h3>
+                <p>「圳惜」二字，蘊含了深刻的雙關意義。「圳」代表嘉義歷史悠久的生命線——道將圳，這是我們實作場域的核心；「惜」則象徵著珍惜與愛護。兩者結合，提醒著每一位學生、居民與遊客，要珍惜水圳資源、尊重自然環境，並進一步珍惜我們共同的生活環境。</p>
+                <ul class="list-disc list-inside space-y-3 text-gray-700">
+                    <li>**情感連結：** 不只是學習知識，更希望透過觀察、植栽與休憩，培養對水圳的深厚情感。</li>
+                    <li>**文化傳承：** 提醒年輕世代了解道將圳的歷史與文化價值，培養對在地文化的尊重與認同。</li>
+                    <li>**行動呼籲：** 讓每個參與者在行動中感受到守護的責任與意義，讓「珍惜」成為日常實踐。</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. 嘉義的母親河：道將圳的歷史與價值 (History and Value) -->
+    <!-- 背景改為淺藍綠色 -->
+    <section id="history" class="bg-teal-50 py-16 md:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto rounded-xl">
+        <!-- 標題改為深藍綠色 -->
+        <h2 class="text-4xl font-bold text-center text-cyan-800 mb-12">
+            嘉義的母親河：流淌三百年的歷史水脈
+        </h2>
+        <div class="grid md:grid-cols-2 gap-12 items-start">
+            <!-- 文字內容 -->
+            <div class="text-lg space-y-6 order-2 md:order-1">
+                <!-- 次標題改為深藍綠色 -->
+                <h3 class="text-3xl font-semibold text-teal-700">從將軍圳到道將圳的誕生</h3>
+                <p>嘉義，古稱諸羅，之所以能在清治時期發展出繁榮的農業與都市生活，關鍵就在於水資源的引導。清康熙年間，由施琅將軍主導開闢了「將軍圳」；隨後又興建了「道爺圳」。最終，這兩條重要的水圳合而為一，形成了今日滋養嘉義的「道將圳」。</p>
+                <!-- 邊框改為藍綠色 -->
+                <p class="text-gray-700 italic border-l-4 border-teal-500 pl-4">
+                    三百多年來，道將圳不僅灌溉農田、維護居民生活，更為城市景觀提供了水脈。可以說，沒有道將圳，就沒有現在的嘉義城。
+                </p>
+                <!-- 副標題改為藍綠色 -->
+                <h4 class="text-xl font-semibold text-teal-600 mt-6">詩人渡也筆下的道將圳：水善利萬物</h4>
+                <p>水圳不只關乎水利，更與人文精神相融。嘉義詩人渡也曾為道將圳賦詩，將水圳比喻為承載良善與美學的通道，啟發人心。詩中提及的水善利嘉義萬物、水善滋潤民生，都深刻體現了水圳的無私貢獻。</p>
+                <!-- 詩文石碑圖片 (使用新照片) -->
+                <div class="content-card mt-6 rounded-lg overflow-hidden border border-gray-200 shadow-lg">
+                    <img src="3.jpg" alt="道將圳詩人渡也題詩石碑" class="w-full h-auto object-cover">
+                    <p class="text-center text-sm p-3 bg-white text-gray-600">
+                        渡也詩作：「道將圳的水」——水善利嘉義萬物，水善滋潤民生，水善洗滌學生的心。
+                    </p>
+                </div>
+            </div>
+            <!-- 視覺元素：運河景觀 -->
+            <div class="content-card rounded-xl overflow-hidden shadow-2xl order-1 md:order-2">
+                <img src="4.jpg" alt="陽光下的道將圳河道景觀" class="w-full h-full object-cover transform transition duration-500 hover:scale-110">
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. 實地走讀：從八掌溪到太陽館 (Walkthrough, Observation, and Ecology) -->
+    <section id="journey" class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <!-- 標題改為深藍綠色 -->
+        <h2 class="text-4xl font-bold text-center text-cyan-800 mb-12">
+            實地走讀：探索生態與人文的交會點
+        </h2>
+        <p class="text-center text-xl mb-12 max-w-4xl mx-auto text-gray-600">
+            我們的走讀旅程，是沿著水圳從源頭八掌溪取水口，一路延伸至水上鄉的太陽館，親身感受道將圳與嘉義城市、農田、自然的共生關係。
+        </p>
+
+        <!-- 走讀起點：八掌溪取水口 -->
+        <div class="grid md:grid-cols-3 gap-12 items-center mb-16">
+            <div class="md:col-span-2 content-card rounded-xl overflow-hidden shadow-xl">
+                <!-- 使用新的取水口照片 -->
+                <img src="5.jpg" alt="八掌溪道將圳取水口設施" class="w-full h-96 object-cover">
+            </div>
+            <div class="md:col-span-1 space-y-4">
+                <!-- 次標題改為深藍綠色 -->
+                <h3 class="text-2xl font-bold text-teal-700">起點：八掌溪的生命之源</h3>
+                <p class="text-gray-700">
+                    道將圳的生命之源。我們在此觀察取水口設施、攔水壩結構及水流狀況，了解水圳如何從八掌溪穩定引水灌溉。這座精巧的水利設施是嘉義農業發展的基石，見證了先民與自然搏鬥的智慧。
+                </p>
+            </div>
+        </div>
+
+        <!-- 沿途景觀：生態與休憩 -->
+        <div class="grid md:grid-cols-2 gap-12 items-start mb-16">
+            <!-- 文字內容 -->
+            <div class="text-lg space-y-6">
+                <!-- 次標題改為深藍綠色 -->
+                <h3 class="text-3xl font-semibold text-teal-700">沿線觀察：從城市到田園的景觀變遷</h3>
+                <p>沿著鐵馬道前行，我們記錄了水圳與城市發展的互動。從嘉義市區的景觀綠化、休憩步道，到郊區與農田的交界，水圳兩岸的生態系統豐富而多樣，展現了水圳作為生態廊道的重要性：</p>
+                <ul class="list-disc list-inside space-y-3 text-gray-700">
+                    <li>**生態景觀：** 觀察岸邊樹木、水生植物，以及小魚、水鳥等棲息情況，體認到水圳是重要的生態廊道。</li>
+                    <li>**休憩空間：** 記錄了沿線的橋樑、校園、公園與鐵馬道，這些綠色空間為居民提供了絕佳的休閒場域。</li>
+                    <li>**環境反思：** 走訪中也發現了垃圾丟棄、外來種入侵等問題，讓我們深刻體會到環境保育的迫切性。</li>
+                </ul>
+            </div>
+            <!-- 視覺元素：騎行與自然 -->
+            <div class="relative content-card rounded-xl overflow-hidden shadow-2xl">
+                <img src="6.jpg" alt="學生在鐵馬道上騎行經過水圳" class="w-full h-96 object-cover">
+                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-gray-900/70 to-transparent p-4">
+                    <p class="text-white text-sm">沿著水圳前行：從鐵馬道感受水圳的陪伴與城市景觀</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新增：風景照片藝廊 (多張風景照) -->
+        <!-- 標題改為深藍綠色 -->
+        <h3 class="text-3xl font-bold text-center text-cyan-800 mb-8 mt-16">
+            道將圳之美：沿線風景攝影集
+        </h3>
+        <div class="photo-gallery">
+            <!-- 使用者上傳的 水圳邊.jpg -->
+            <div class="content-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl">
+                <img src="7.jpg" alt="水圳邊的休憩步道與綠意" class="w-full h-48 object-cover transition duration-300 hover:opacity-80">
+            </div>
+            <!-- 使用者上傳的 鐵馬道.jpg -->
+            <div class="content-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl">
+                <img src="8.jpg" alt="道將圳旁整齊的自行車道" class="w-full h-48 object-cover transition duration-300 hover:opacity-80">
+            </div>
+            <div class="content-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl">
+                <img src="9.jpg" alt="寬闊河道與橋樑" class="w-full h-48 object-cover transition duration-300 hover:opacity-80">
+            </div>
+            <div class="content-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl">
+                <img src="10.jpg" alt="近距離拍攝水流與植被" class="w-full h-48 object-cover transition duration-300 hover:opacity-80">
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. 人文連結：社區與世代的記憶 (Human Connection and Community) -->
+    <!-- 背景改為淺藍綠色 -->
+    <section id="community" class="bg-teal-50 py-16 md:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto rounded-xl">
+        <!-- 標題改為深藍綠色 -->
+        <h2 class="text-4xl font-bold text-center text-cyan-800 mb-12">
+            人文關懷：水圳承載的社區記憶
+        </h2>
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <!-- 視覺元素：訪談紀錄 (使用新照片) -->
+            <div class="content-card rounded-xl overflow-hidden shadow-2xl">
+                <img src="11.png" alt="學生正在與學者或長輩進行訪談" class="w-full h-80 object-cover">
+                <p class="text-center text-sm p-3 bg-white text-gray-600">
+                    深度訪談：向專家學者請益，了解水圳的歷史與環境保護議題。
+                </p>
+            </div>
+            <!-- 文字內容 -->
+            <div class="text-lg space-y-6">
+                <!-- 次標題改為深藍綠色 -->
+                <h3 class="text-3xl font-semibold text-teal-700">聆聽：水圳與嘉義人的生命故事</h3>
+                <p>為了深入理解道將圳在人類社會中的角色，我們進行了一系列跨世代的訪談：</p>
+                <ul class="list-disc list-inside space-y-3 text-gray-700">
+                    <li>**長輩與居民：** 紀錄他們小時候與水圳的互動，如灌溉、戲水與農田生活，收集水圳對他們生活與文化的記憶。這些口述歷史是我們最珍貴的資產。</li>
+                    <li>**學者與老師：** 邀請地理或歷史學者解釋道將圳的建造背景與城市發展關係，提供環境保護與永續利用的觀點。</li>
+                    <li>**學生同儕：** 訪問同學對水圳的認識程度，了解青年世代對在地歷史與環境的關注，激發更多參與熱情。</li>
+                </ul>
+                <p class="text-gray-700">
+                    透過這些口述歷史，我們意識到道將圳不僅是條水渠，更是世代嘉義人共同情感與歷史的載體。我們希望透過電子書推廣，讓大眾更能了解我們嘉義的母親——「道將圳」。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. 永續發展與我們的反思 (Sustainability and Conclusion) -->
+    <section id="sustainability" class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <!-- 標題改為深藍綠色 -->
+        <h2 class="text-4xl font-bold text-center text-cyan-800 mb-12">
+            永續發展：守護嘉義的未來
+        </h2>
+        <div class="space-y-12">
+
+            <!-- 新增電子書下載連結 - 背景改為深藍綠色 -->
+            <div class="flex flex-col items-center justify-center p-8 bg-teal-700 rounded-xl shadow-2xl">
+                <h3 class="text-3xl font-bold text-white mb-4">
+                    立即下載：道將圳電子書 APP (Android)
+                </h3>
+                <p class="text-teal-100 text-center mb-6 max-w-2xl">
+                    為了更深入推廣道將圳的環境教育，我們開發了專屬的 Android 應用程式。立即下載 APK 檔案，隨時隨地查閱豐富的專題內容！
+                </p>
+                <a href="18.apk" download="道將圳電子書.apk" class="inline-flex items-center justify-center bg-white text-teal-700 font-extrabold py-4 px-10 rounded-full transition duration-300 ease-in-out transform hover:scale-105 hover:bg-gray-100 shadow-lg text-lg">
+                    <i class="ph-fill ph-android-logo text-2xl mr-3"></i>
+                    下載道將圳 APP (APK)
+                </a>
+                <p class="text-xs text-teal-300 mt-3">
+                    * APK 檔案僅適用於 Android 系統。
+                </p>
+            </div>
+            
+            <div class="p-8 bg-teal-50 rounded-xl shadow-inner border-t-4 border-teal-300">
+                <h3 class="text-2xl font-bold text-cyan-800 mb-8 text-center">
+                    電子書 APP 模組總覽：六大核心功能
+                </h3>
+                <!-- 在桌面螢幕 (md) 上顯示 3 欄，手機上顯示 2 欄 -->
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                    
+                    <!-- 1. 電子書的首頁 (d1.jpg) -->
+                    <div class="module-card">
+                        <img src="12.jpg" alt="電子書首頁介面截圖" class="module-image">
+                        <div class="p-4 flex-grow flex flex-col justify-center">
+                            <h4 class="module-title">電子書的首頁</h4>
+                            <p class="module-description">簡潔的主視覺與清晰導航，展示核心主題「圳惜．珍惜」。</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 2. 歷史故事 (d2.jpg) -->
+                    <div class="module-card">
+                        <img src="13.jpg" alt="歷史故事章節介面截圖" class="module-image">
+                        <div class="p-4 flex-grow flex flex-col justify-center">
+                            <h4 class="module-title">歷史故事</h4>
+                            <p class="module-description">深入介紹道將圳的歷史沿革、水利價值與人文故事。</p>
+                        </div>
+                    </div>
+
+                    <!-- 3. 景點地圖 (d3.jpg) -->
+                    <div class="module-card">
+                        <img src="14.jpg" alt="景點地圖介面截圖" class="module-image">
+                        <div class="p-4 flex-grow flex flex-col justify-center">
+                            <h4 class="module-title">景點地圖</h4>
+                            <p class="module-description">提供水圳沿線重要景點的互動地圖與走讀路線導覽。</p>
+                        </div>
+                    </div>
+
+                    <!-- 4. 小知識 (d4.jpg) -->
+                    <div class="module-card">
+                        <img src="15.jpg" alt="小知識問答介面截圖" class="module-image">
+                        <div class="p-4 flex-grow flex flex-col justify-center">
+                            <h4 class="module-title">小知識</h4>
+                            <p class="module-description">趣味問答形式，學習水圳的生態系統與水利工程知識。</p>
+                        </div>
+                    </div>
+
+                    <!-- 5. 環保小遊戲 (d5.jpg) -->
+                    <div class="module-card">
+                        <img src="16.jpg" alt="環保小遊戲介面截圖" class="module-image">
+                        <div class="p-4 flex-grow flex flex-col justify-center">
+                            <h4 class="module-title">環保小遊戲</h4>
+                            <p class="module-description">透過互動遊戲設計，增進環保意識與正確的節水觀念。</p>
+                        </div>
+                    </div>
+
+                    <!-- 6. 小測驗 (d6.jpg) -->
+                    <div class="module-card">
+                        <img src="17.jpg" alt="小測驗介面截圖" class="module-image">
+                        <div class="p-4 flex-grow flex flex-col justify-center">
+                            <h4 class="module-title">小測驗</h4>
+                            <p class="module-description">設計多媒體測驗，幫助學習者檢驗學習成果與理解程度。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- **結束：電子書六大功能模組介紹** -->
+
+            <!-- 永續議題 -->
+            <div class="content-card bg-white p-8 rounded-xl shadow-xl border-t-4 border-teal-500">
+                <!-- 次標題改為深藍綠色 -->
+                <h3 class="text-2xl font-semibold text-teal-700 mb-4">環境倫理與永續行動</h3>
+                <p class="text-gray-700 mb-4">
+                    道將圳沿岸不只是人類灌溉農田的工具，也是鳥類、魚類、昆蟲和植物的家園。我們理解「尊重自然、共存共榮」的觀念。我們將持續倡導：
+                </p>
+                <div class="flex flex-wrap gap-4 text-sm font-medium">
+                    <!-- 標籤顏色改為藍綠色系 -->
+                    <span class="px-3 py-1 bg-teal-100 text-teal-700 rounded-full">節約水資源</span>
+                    <span class="px-3 py-1 bg-teal-100 text-teal-700 rounded-full">定期舉辦清潔活動</span>
+                    <span class="px-3 py-1 bg-teal-100 text-teal-700 rounded-full">推廣水圳生態教育</span>
+                </div>
+            </div>
+
+            <!-- 學生心得 (可切換顯示更多) & 老師心得 (完整顯示) -->
+            <div class="bg-gray-100 p-8 rounded-xl shadow-inner" id="reflections-section">
+                <!-- 標題改為深藍綠色 -->
+                <h3 class="text-2xl font-semibold text-teal-700 mb-6 text-center">我們的走讀心得與反思</h3>
+                <div class="grid md:grid-cols-3 gap-8 mb-8">
+                    
+                    <!-- 1. A 同學 (帶有顯示更多功能) -->
+                    <div class="p-4 border-l-4 border-teal-600 bg-white rounded-lg content-card flex flex-col">
+                        <p class="font-bold text-lg mb-2 text-teal-800">A 同學的反思</p>
+                        <div id="reflection-A" class="reflection-text flex-grow">
+                            <p class="text-sm text-gray-700">
+                                藉由這次的主題探訪讓我們以不同的角度來研究道將圳，我們用了2天的時間騎自行車來好好的觀察這個嘉義市的「老古董」，我們才發現原來它不單單只有我們所看到的那一面而已。從小到大，我一直沒有深入地研究這個每天都會路過的水圳，我對於這個水道一直都不以為然，甚至還對於它的感到厭惡，直到嘉義市整府投入預算來好好整頓這條伴隨著許多嘉義人長大的水圳。這就像上了年紀的老人需要定期做健康檢查、生了病需要醫生的治療一樣，而在這裡，那些維護它的工人就像是治療它的醫生，而我們則像是他疼愛的小朋友一樣，所以我們應該要飲水思源，好好地愛它。
+                            </p>
+                        </div>
+                        <button data-target="reflection-A" class="show-more-btn mt-3 text-teal-600 hover:text-teal-800 font-medium text-sm text-left">
+                            顯示更多...
+                        </button>
+                    </div>
+
+                    <!-- 2. B 同學 (帶有顯示更多功能) -->
+                    <div class="p-4 border-l-4 border-teal-600 bg-white rounded-lg content-card flex flex-col">
+                        <p class="font-bold text-lg mb-2 text-teal-800">B 同學的感悟</p>
+                        <div id="reflection-B" class="reflection-text flex-grow">
+                            <p class="text-sm text-gray-700">
+                                這次的實作不僅僅是一場比賽，更是一段讓我們與道將圳重新建立情感與認識的旅程。過去的我們，或許只是從旁經過這條水圳，從未停下腳步細看它的樣貌。然而，當我們真正走進道將圳，從八掌溪的渠首工出發，一步步走到太陽館時，才第一次發現它原來如此豐富而有生命力。沿途，我們觀察到許多動植物的生態，例如在岸邊悠游的小魚、水鳥的身影、以及隨風搖曳的蘆葦，這些都讓我們對這條水圳有了全新的認識。水圳不僅是灌溉農田的渠道，更肩負著生態廊道的重責。
+                            </p>
+                        </div>
+                        <button data-target="reflection-B" class="show-more-btn mt-3 text-teal-600 hover:text-teal-800 font-medium text-sm text-left">
+                            顯示更多...
+                        </button>
+                    </div>
+                    
+                    <!-- 3. C 同學 (帶有顯示更多功能) -->
+                    <div class="p-4 border-l-4 border-teal-600 bg-white rounded-lg content-card flex flex-col">
+                        <p class="font-bold text-lg mb-2 text-teal-800">C 同學的行動與反思</p>
+                        <div id="reflection-C" class="reflection-text flex-grow">
+                            <p class="text-sm text-gray-700">
+                                在這次探訪中，雖然我們看到了道將圳的美麗和生態多樣性，但時常也看見了很多人為垃圾堆積在水圳沿岸。這讓我深刻體會到環境教育的不足和居民環保意識的缺乏。希望我們可以藉由這次電子書的推廣，讓大眾能更全面地了解我們嘉義的母親河，進而對它產生敬重和愛護之心。我們會繼續用行動去關心它、記錄它，並從自身做起，共同守護這條重要的生命之水。我承諾未來會更積極地參與社區的清潔活動，並向身邊的親友宣傳愛護水圳的觀念，讓「圳惜」的精神真正落實於生活之中。
+                            </p>
+                        </div>
+                        <button data-target="reflection-C" class="show-more-btn mt-3 text-teal-600 hover:text-teal-800 font-medium text-sm text-left">
+                            顯示更多...
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- 4. 老師的心得 (完整顯示) -->
+                <div id="teacher-reflection-card" class="mt-8">
+                    <div class="p-6 border-4 border-cyan-800 bg-white rounded-xl shadow-2xl">
+                        <p class="font-extrabold text-xl mb-3 text-cyan-800 flex items-center">
+                            <i class="ph-fill ph-chalkboard-teacher text-2xl mr-3"></i>
+                            指導老師的心得與期許
+                        </p>
+                        <p class="text-base text-gray-800 italic">
+                            「看到學生們從對道將圳的陌生，到透過親身走讀、觀察與訪談，最終產生深厚的在地情感和環境責任感，是我最大的收穫。這次專題製作不僅是知識的累積，更重要的是培養了他們獨立思考、主動探索的能力，以及對家鄉文化的尊重與認同。道將圳作為活生生的教材，教會了我們珍惜與永續的真諦。期許孩子們能將這份『圳惜』的精神，延續到未來的每一個行動中。」
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 頁腳 -->
+    <footer class="bg-gray-800 text-white mt-16 p-8">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="mb-2 text-xl font-semibold">「圳惜．珍惜」：道將圳環境教育</p>
+            <p class="text-sm text-gray-400">專案理念：珍惜水圳、珍惜自然、珍惜生活</p>
+            <p class="text-xs text-gray-500 mt-4">© 2025 民生國中環境教育。版權所有。</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 處理所有「顯示更多」按鈕的邏輯
+            const buttons = document.querySelectorAll('.show-more-btn');
+
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 獲取目標內容的 ID
+                    const targetId = this.getAttribute('data-target');
+                    const targetElement = document.getElementById(targetId);
+                    
+                    if (!targetElement) return;
+
+                    // 切換 expanded class
+                    const isExpanded = targetElement.classList.toggle('expanded');
+                    
+                    // 根據狀態改變按鈕文字
+                    if (isExpanded) {
+                        this.textContent = '收起內容';
+                        // 滾動到卡片頂部，視覺效果更佳
+                        // 使用 requestAnimationFrame 確保在內容高度變化後再滾動
+                        window.requestAnimationFrame(() => {
+                            targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        });
+                    } else {
+                        this.textContent = '顯示更多...';
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
